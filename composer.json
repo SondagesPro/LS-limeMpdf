@@ -1,0 +1,25 @@
+{
+    "name": "sondagesPro/mpdfHelper",
+    "version": "0.1.0-dev",
+    "description": "Adding mpdf as helper for other plugins",
+    "type": "limesurvey-plugin",
+    "homepage": "https://gitlab.com/SondagesPro/",
+    "license": "AGPL-3.0+",
+    "authors": [
+        {
+            "name": "Denis Chenu",
+            "email": "contact@sondages.pro",
+            "homepage": "https://sondages.pro",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "source": "https://gitlab.com/SondagesPro/coreAndTools/limeMpdf/",
+        "issues": "https://gitlab.com/SondagesPro/coreAndTools/limeMpdf/issues",
+        "email": "support@sondages.pro"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "mpdf/mpdf" : "7.1.*"
+    }
+}
