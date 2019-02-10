@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.0-dev
+ * @version 0.1.1-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
  * GNU General Public License for more details.
  */
 namespace limeMpdf\helper;
-use limeMpdf\Mpdf;
+require_once __DIR__ . '/../vendor/autoload.php';
+use Mpdf;
 use Yii;
 use CHtmlPurifier;
 use Template;
@@ -34,20 +35,30 @@ class limeMpdfHelper {
     public $logo = "";
     /* @var integer|null */
     public $surveyId = null;
-
+    /* @var array() @see https://mpdf.github.io/configuration/configuration-v7-x.html#constructor-configuration */
+    public $mpdfOptions = array();
+    /* @var string|null */
+    public $filename = null;
     /**
      * @param integer $surveyId
      */
-    public function _contruct($surveyId = null)
+    public function __construct($surveyId = null)
     {
         $this->title = Yii::app()->getConfig('sitename');
+        $this->mpdfOptions = array(
+            'mode' => 'c', // To review : utf-8 use dejavusans, c only default PDF font
+            'setAutoTopMargin' =>'pad',
+            'tempDir' => Yii::app()->getRuntimePath(), /* @todo : create own dir and cleaning it */
+        );
         if($surveyId) {
             if(empty(Survey::model()->findByPk($surveyId))) {
                 return;
             }
             $this->surveyId = $surveyId;
-            $this->title = Survey::model()->findByPk($options['surveyid'])->getLocalizedTitle();
-            $this->subtitle = Yii::app()->getConfig('sitename');
+            $this->setTitle(array(
+                $this->title = Survey::model()->findByPk($options['surveyid'])->getLocalizedTitle(),
+                $this->subtitle = Yii::app()->getConfig('sitename'),
+            ));
         }
     }
 
@@ -59,10 +70,25 @@ class limeMpdfHelper {
      */
     public function setTitle($title,$subtitle=null)
     {
+        if(empty($title)) {
+            $this->title = null;
+            $this->mpdfOptions['setAutoTopMargin'] = false;
+            return;
+        }
         $this->title = $title;
         if(is_string($subtitle)) {
             $this->subtitle = $subtitle;
         }
+    }
+
+    /**
+     * set the options for Mpdf
+     * @param array $options @see https://mpdf.github.io/configuration/configuration-v7-x.html
+     * @return void
+     */
+    public function setOptions($options = array())
+    {
+        $this->mpdfOptions = array_merge($this->mpdfOptions,$options);
     }
 
     /**
@@ -71,17 +97,9 @@ class limeMpdfHelper {
      * @param $output string \limeMpdf\Mpdf\Output\Destination
      * @return void
      */
-    public function doPdfContent($html) // ,\limeMpdf\Mpdf\Output\Destination::DOWNLOAD)
+    public function doPdfContent($html,$output = \Mpdf\Output\Destination::DOWNLOAD )
     {
-        $mpdfOptions = array(
-            //~ 'h2bookmarks' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
-            //~ 'h2toc' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
-        );
-        if($this->title) {
-            $mpdfOptions['setAutoTopMargin'] = 'pad';
-        }
-
-        $mpdf = new \limeMpdf\helper\Mpdf($mpdfOptions);
+        $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
         $html = $this->cleanUpAndFixHtml($html);
         $renderData = array(
             'title' => $this->title,
@@ -100,7 +118,10 @@ class limeMpdfHelper {
         $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
         $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
         $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
-        $mpdf->Output();
+        if(is_null($this->filename)) {
+            $this->filename = sanitize_filename($this->title);
+        }
+        $mpdf->Output($this->filename,$output);
     }
 
 
@@ -128,7 +149,7 @@ class limeMpdfHelper {
                 'nntp' => true,
                 'news' => true,
                 'data' => true,
-                )
+            )
         );
         $html=$oPurifier->purify($html);
         $html = str_replace('<br class="pagebreak" />','<pagebreak />',$html);
