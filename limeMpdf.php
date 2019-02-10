@@ -68,20 +68,22 @@ class limeMpdf extends PluginBase {
 
     public function newDirectRequest()
     {
+        if(!Permission::getUserId()) {
+            /* Making PDF take memory, disable if not loggued */
+            throw new CHttpException(401);
+        }
         if($this->getEvent()->get('target') != get_class($this)) {
             return;
         }
         $function = $this->getEvent()->get('function');
         /* event updated here */
         $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/demo-html.twig', array('aSurveyInfo'=>array()));
-
         $pdfHelper = new \limeMpdf\helper\limeMpdfHelper();
         $pdfHelper->setOptions(array(
             'h2bookmarks' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
             'h2toc' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
         ));
         $pdfHelper->setTitle("Demo of limeMpdf",Yii::app()->getConfig('sitename'));
-
         if($function == 'view') {
             $pdfHelper->doPdfContent($html,\Mpdf\Output\Destination::INLINE);
         }
