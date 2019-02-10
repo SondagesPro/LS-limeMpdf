@@ -1,5 +1,37 @@
-<h1>This is the demo HTML of limeMpdf</h1>
-<p>limeMpdf include by default some bootsrap 3 style. Then this demo follow boostrapd 3 CSS page</p>
+<h1>Simple usage</h1>
+<p>LimeMpdf allow plugin to create pdf more easily for user‘s.</p>
+<pre>
+$html = "&lt;p&gt;Some HTML to put in your PDF.&lt;/p&gt;";
+$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper();
+/* Send pdf file to browser for download */
+$limeMpdfHelper->doPdfContent($html);
+</pre>
+<p>In constructor you can set the surveyid to be used for Template used in generator.</p>
+<pre>$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);</pre>
+<h2>Adapt html and css</h2>
+<p>The twig files used are in <code>./views/subviews/mpdfHelper/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
+<p>Each twig files get this variables : <code>title</code>, <code>subtiles</code> and <code>aSurveyInfo</code>.</p>
+<ul>
+<li><code>body.twig</code> : the final content of you PDF, the content are inside <code>content</code> variable.</li>
+<li><code>head.twig</code> : the final header set, it‘s empty : no header was set.</li>
+<li><code>stylesheet.twig</code> : the stylesheet used, by default include style-bootstrap.twig, style-helper.twig and style-custom.twig. style-custom.twig are empty and stay empty in this plugin.</li>
+</ul>
+<h2>limeMpdfHelper option and function</h2>
+<ul class="list-unstyled">
+<li><code>$limeMpdfHelper->setTitle($title,$subtitle=null);</code>: set the title and the sub title for header.</li>
+<li><code>$limeMpdfHelper->setOptions($options = array());</code>: set specific option for Mpdf. This don‘t reset whole options, just set this in array.</li>
+</ul>
+<pagebreak>
+<h1>Available style, html and restriction</h1>
+<p>Since mimeMpdf use mpdf, you can use HTML in your pdf.
+Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html">supported tags</a>, supported <a href="https://mpdf.github.io/html-support/html-attributes.html">tags attributes</a> and <a href="https://mpdf.github.io/css-stylesheets/supported-css.html">supported CSS</a>.</p>
+<p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes. You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.</p>
+<p>By default : LimeMpdfHelper include some adapated Bootstrap style and some helper style.</p>
+<pagebreak>
+<h1>Bootstrap style for pdf</h1>
+<p>LimeMpdf include by default some Bootstrap 3 style. Then this demo follow Bootstrap 3 CSS page.</p>
+<p>The stylesheet used are in <code>views/subviews/mpdfHelper/style-bootstrap.twig</code>. You can use your own with same file at same place in your template.</p>
+
 <h2>Typography</h2>
 <h3>The header style</h3>
 <div class="h1">h1. Bootstrap heading <small>Secondary text</small></div>

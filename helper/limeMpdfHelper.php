@@ -57,10 +57,10 @@ class limeMpdfHelper {
                 return;
             }
             $this->surveyId = $surveyId;
-            $this->setTitle(array(
-                $this->title = Survey::model()->findByPk($options['surveyid'])->getLocalizedTitle(),
-                $this->subtitle = Yii::app()->getConfig('sitename'),
-            ));
+            $this->setTitle(
+                Survey::model()->findByPk($surveyId)->getLocalizedTitle(),
+                Yii::app()->getConfig('sitename')
+            );
         }
     }
 
@@ -109,12 +109,17 @@ class limeMpdfHelper {
             'subtitle' => $this->subtitle,
             'aSurveyInfo' => array(),
         );
+
         if(is_null($this->filename)) {
             $this->filename = sanitize_filename($this->title);
         }
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
+        /* Set template */
+        \Template::resetInstance();
+        $oTemplate = \Template::model()->getInstance(null, $this->surveyId);
+
         $headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);

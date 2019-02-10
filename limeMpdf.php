@@ -79,6 +79,7 @@ class limeMpdf extends PluginBase {
         /* event updated here */
         $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/demo-html.twig', array('aSurveyInfo'=>array()));
         $pdfHelper = new \limeMpdf\helper\limeMpdfHelper();
+
         $pdfHelper->setOptions(array(
             'h2bookmarks' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
             'h2toc' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
