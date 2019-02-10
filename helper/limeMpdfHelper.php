@@ -41,7 +41,15 @@ class limeMpdfHelper {
     public $filename = null;
     /* @var boolean */
     public $filterHtml = true;
-
+    /* @var boolean */
+    public $helperTags = true;
+    /* @var string[] */
+    public $aKnowTags = array(
+        'radio',
+        'radio-checked',
+        'checkbox',
+        'checkbox-checked',
+    );
     /**
      * @param integer $surveyId
      */
@@ -102,6 +110,13 @@ class limeMpdfHelper {
      */
     public function doPdfContent($html,$output = \Mpdf\Output\Destination::DOWNLOAD )
     {
+        /* Set template */
+        \Template::resetInstance();
+        $oTemplate = \Template::model()->getInstance(null, $this->surveyId);
+
+        if($this->helperTags) {
+            $html = $this->replaceSpecificTags($html);
+        }
         if($this->filterHtml) {
             $html = $this->cleanUpHtml($html);
         }
@@ -114,14 +129,10 @@ class limeMpdfHelper {
         if(is_null($this->filename)) {
             $this->filename = sanitize_filename($this->title,false,false,false);
         }
-        
+
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
-        /* Set template */
-        \Template::resetInstance();
-        $oTemplate = \Template::model()->getInstance(null, $this->surveyId);
-
         $headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
@@ -133,7 +144,6 @@ class limeMpdfHelper {
             }
             $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
-            
             $mpdf->Output($this->filename.".pdf",$output);
         } catch (\Mpdf\MpdfException $e) {
             /* @todo : review with debug=0 */
@@ -170,6 +180,27 @@ class limeMpdfHelper {
         );
         $html=$oPurifier->purify($html);
         $html = str_replace('<br class="pagebreak" />','<pagebreak />',$html);
+        return $html;
+    }
+
+    /**
+     * Specific tags replacement
+     * @param string $html
+     * @return string
+     */
+    public function replaceSpecificTags($html)
+    {
+        $renderData = array(
+            'aSurveyInfo' => array(),
+            'defaultBasePath' => 'plugins/limeMpdf/assets/'
+        );
+        if($this->surveyId) {
+            $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
+        }
+        foreach($this->aKnowTags as $tag) {
+            $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/'.$tag.'.twig', $renderData);
+            $html = str_replace("<".$tag.">",$replacement,$html);
+        }
         return $html;
     }
 }

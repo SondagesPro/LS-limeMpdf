@@ -48,3 +48,15 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
 <h3>User input</h3>
 <p>To switch directories, type <kbd>cd</kbd> followed by the name of the directory.<br>
 To edit settings, press <kbd><kbd>ctrl</kbd> + <kbd>,</kbd></kbd></p>
+
+<pagebreak>
+<h1>Extra helper</h1>
+<p>To do your report, limeMpdf offer some extra tag:</p>
+<ul>
+<li><code>&lt;radio&gt;</code> : <radio></li>
+<li><code>&lt;radio-checked&gt;</code> : <radio-checked></li>
+<li><code>&lt;checkbox&gt;</code> : <checkbox></li>
+<li><code>&lt;checkbox-checked&gt;</code> : <checkbox-checked></li>
+</ul>
+<p>More tags can be added with $limeMpdfHelper->aKnowTags but you need a view in <code>./views/subviews/mpdfHelper/</code> of your template with exactly the same name.</p>
+
