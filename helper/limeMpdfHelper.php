@@ -39,6 +39,8 @@ class limeMpdfHelper {
     public $mpdfOptions = array();
     /* @var string|null */
     public $filename = null;
+    /* @var boolean */
+    public $filterHtml = true;
     /**
      * @param integer $surveyId
      */
@@ -99,29 +101,37 @@ class limeMpdfHelper {
      */
     public function doPdfContent($html,$output = \Mpdf\Output\Destination::DOWNLOAD )
     {
-        $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
-        $html = $this->cleanUpAndFixHtml($html);
+        if($this->filterHtml) {
+            $html = $this->cleanUpAndFixHtml($html);
+        }
         $renderData = array(
             'title' => $this->title,
             'subtitle' => $this->subtitle,
             'aSurveyInfo' => array(),
         );
+        if(is_null($this->filename)) {
+            $this->filename = sanitize_filename($this->title);
+        }
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
         $headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
-        if(trim($headerHtml)) {
-            $mpdf->SetHTMLHeader($headerHtml);
-        }
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
         $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
-        $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
-        $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
-        if(is_null($this->filename)) {
-            $this->filename = sanitize_filename($this->title);
+        try {
+            $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
+            if(trim($headerHtml)) {
+                $mpdf->SetHTMLHeader($headerHtml);
+            }
+            $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
+            $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
+            
+            $mpdf->Output($this->filename,$output);
+        } catch (\Mpdf\MpdfException $e) {
+            /* @todo : review with debug=0 */
+            throw new CHttpException(500,$e->getMessage());
         }
-        $mpdf->Output($this->filename,$output);
     }
 
 
