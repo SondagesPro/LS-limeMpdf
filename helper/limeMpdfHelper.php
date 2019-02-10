@@ -41,6 +41,7 @@ class limeMpdfHelper {
     public $filename = null;
     /* @var boolean */
     public $filterHtml = true;
+
     /**
      * @param integer $surveyId
      */
@@ -102,7 +103,7 @@ class limeMpdfHelper {
     public function doPdfContent($html,$output = \Mpdf\Output\Destination::DOWNLOAD )
     {
         if($this->filterHtml) {
-            $html = $this->cleanUpAndFixHtml($html);
+            $html = $this->cleanUpHtml($html);
         }
         $renderData = array(
             'title' => $this->title,
@@ -111,8 +112,9 @@ class limeMpdfHelper {
         );
 
         if(is_null($this->filename)) {
-            $this->filename = sanitize_filename($this->title);
+            $this->filename = sanitize_filename($this->title,false,false,false);
         }
+        
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
@@ -132,7 +134,7 @@ class limeMpdfHelper {
             $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
             
-            $mpdf->Output($this->filename,$output);
+            $mpdf->Output($this->filename.".pdf",$output);
         } catch (\Mpdf\MpdfException $e) {
             /* @todo : review with debug=0 */
             throw new CHttpException(500,$e->getMessage());
@@ -145,7 +147,7 @@ class limeMpdfHelper {
      * @parm string $html
      * @return string
      */
-    public function cleanUpAndFixHtml($html)
+    public function cleanUpHtml($html)
     {
         $html = str_replace(array('<pagebreak>','<pagebreak />'),array('<br class="pagebreak" />','<br class="pagebreak" />'),$html);
         $oPurifier = new CHtmlPurifier();
