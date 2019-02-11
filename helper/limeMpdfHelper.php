@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.1-dev
+ * @version 0.2.0-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,14 +50,23 @@ class limeMpdfHelper {
         'checkbox',
         'checkbox-checked',
     );
+    /* @var string|null */
+    public $headerHtml;
+    /* @var string|null */
+    public $footerHtml;
+
     /**
-     * @param integer $surveyId
+     * @param integer|null $surveyId
+     * @param string|null $mode : c to force core font, "utf-8" for dejavusans, but language-x to use Mpdf\Language\LanguageToFont->getLanguageOptions
      */
-    public function __construct($surveyId = null)
+    public function __construct($surveyId = null,$mode = null)
     {
         $this->title = Yii::app()->getConfig('sitename');
+        if(empty($mode)) {
+            $mode = Yii::app()->getLanguage();
+        }
         $this->mpdfOptions = array(
-            'mode' => 'c', // To review : utf-8 use dejavusans, c only default PDF font
+            'mode' => Yii::app()->getLanguage()."-x",
             'setAutoTopMargin' =>'pad',
             'tempDir' => Yii::app()->getRuntimePath(), /* @todo : create own dir and cleaning it */
         );
@@ -120,10 +129,15 @@ class limeMpdfHelper {
         if($this->filterHtml) {
             $html = $this->cleanUpHtml($html);
         }
+        $languageData = getLanguageDetails(Yii::app()->getLanguage());
+        $languageData['lang'] = Yii::app()->getLanguage();
+        $languageData['dir'] = $languageData['rtl'] ? 'rtl' : 'ltr';
+        $languageData['dateformats'] = getDateFormatData($languageData['dateformat']);
         $renderData = array(
             'title' => $this->title,
             'subtitle' => $this->subtitle,
             'aSurveyInfo' => array(),
+            'aLangageData' => $languageData,
         );
 
         if(is_null($this->filename)) {
@@ -133,21 +147,31 @@ class limeMpdfHelper {
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
-        $headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
+        if(is_null($this->headerHtml)) {
+            $this->headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
+        }
+        if(is_null($this->footerHtml)) {
+            $this->footerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/footer.twig', $renderData);
+        }
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
         $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
+
         try {
             $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
-            if(trim($headerHtml)) {
-                $mpdf->SetHTMLHeader($headerHtml);
+
+            if(trim($this->headerHtml)) {
+                $mpdf->SetHTMLHeader($this->headerHtml);
             }
+            if(trim($this->footerHtml)) {
+                $mpdf->SetHTMLFooter($this->footerHtml);
+            }
+
             $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
             $mpdf->Output($this->filename.".pdf",$output);
         } catch (\Mpdf\MpdfException $e) {
-            /* @todo : review with debug=0 */
-            throw new CHttpException(500,$e->getMessage());
+            throw new \CHttpException(500,$e->getMessage());
         }
     }
 
@@ -159,7 +183,7 @@ class limeMpdfHelper {
      */
     public function cleanUpHtml($html)
     {
-        $html = str_replace(array('<pagebreak>','<pagebreak />'),array('<br class="pagebreak" />','<br class="pagebreak" />'),$html);
+        $html = str_replace('<pagebreak','<br class="pagebreak"',$html);
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
             'AutoFormat.RemoveEmpty'=>false,
@@ -179,7 +203,7 @@ class limeMpdfHelper {
             )
         );
         $html=$oPurifier->purify($html);
-        $html = str_replace('<br class="pagebreak" />','<pagebreak />',$html);
+        $html = str_replace('<br class="pagebreak"','<pagebreak',$html);
         return $html;
     }
 
@@ -198,7 +222,7 @@ class limeMpdfHelper {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
         foreach($this->aKnowTags as $tag) {
-            $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/'.$tag.'.twig', $renderData);
+            $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/tags/'.$tag.'.twig', $renderData);
             $html = str_replace("<".$tag.">",$replacement,$html);
         }
         return $html;

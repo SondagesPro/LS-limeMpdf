@@ -75,6 +75,7 @@ class limeMpdf extends PluginBase {
         if($this->getEvent()->get('target') != get_class($this)) {
             return;
         }
+        App()->setLanguage(Yii::app()->session['adminlang']);
         $function = $this->getEvent()->get('function');
         /* event updated here */
         $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/demo-html.twig', array('aSurveyInfo'=>array()));
@@ -83,6 +84,7 @@ class limeMpdf extends PluginBase {
         $pdfHelper->setOptions(array(
             'h2bookmarks' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
             'h2toc' => array('H1'=>0, 'H2'=>1, 'H3'=>2),
+            //~ 'title2annots' => true,
         ));
         $pdfHelper->setTitle("Demo of limeMpdf",Yii::app()->getConfig('sitename'));
         if($function == 'view') {
