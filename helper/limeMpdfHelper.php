@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.2.0-dev
+ * @version 0.2.1-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ class limeMpdfHelper {
     public $surveyId = null;
     /* @var array() @see https://mpdf.github.io/configuration/configuration-v7-x.html#constructor-configuration */
     public $mpdfOptions = array();
-    /* @var string|null */
+    /* @var string|null filename */
     public $filename = null;
     /* @var boolean */
     public $filterHtml = true;
@@ -62,11 +62,8 @@ class limeMpdfHelper {
     public function __construct($surveyId = null,$mode = null)
     {
         $this->title = Yii::app()->getConfig('sitename');
-        if(empty($mode)) {
-            $mode = Yii::app()->getLanguage();
-        }
         $this->mpdfOptions = array(
-            'mode' => Yii::app()->getLanguage()."-x",
+            'mode' => $mode,
             'setAutoTopMargin' =>'pad',
             'tempDir' => Yii::app()->getRuntimePath(), /* @todo : create own dir and cleaning it */
         );
@@ -141,7 +138,7 @@ class limeMpdfHelper {
         );
 
         if(is_null($this->filename)) {
-            $this->filename = sanitize_filename($this->title,false,false,false);
+            $this->filename = sanitize_filename($this->title,false,false,false).".pdf";
         }
 
         if($this->surveyId) {
@@ -156,7 +153,6 @@ class limeMpdfHelper {
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
         $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
-
         try {
             $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
 
@@ -169,7 +165,7 @@ class limeMpdfHelper {
 
             $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
-            $mpdf->Output($this->filename.".pdf",$output);
+            $mpdf->Output($this->filename,$output);
         } catch (\Mpdf\MpdfException $e) {
             throw new \CHttpException(500,$e->getMessage());
         }
