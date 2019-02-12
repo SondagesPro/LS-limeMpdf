@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.2.1-dev
+ * @version 0.2.2-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,11 +120,11 @@ class limeMpdfHelper {
         \Template::resetInstance();
         $oTemplate = \Template::model()->getInstance(null, $this->surveyId);
 
-        if($this->helperTags) {
-            $html = $this->replaceSpecificTags($html);
-        }
         if($this->filterHtml) {
             $html = $this->cleanUpHtml($html);
+        }
+        if($this->helperTags) {
+            $html = $this->replaceSpecificTags($html);
         }
         $languageData = getLanguageDetails(Yii::app()->getLanguage());
         $languageData['lang'] = Yii::app()->getLanguage();
@@ -153,9 +153,10 @@ class limeMpdfHelper {
         $renderData['content'] = $html;
         $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
         $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
+
         try {
             $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
-
+            //$mpdf->showImageErrors = true;
             if(trim($this->headerHtml)) {
                 $mpdf->SetHTMLHeader($this->headerHtml);
             }
@@ -180,6 +181,12 @@ class limeMpdfHelper {
     public function cleanUpHtml($html)
     {
         $html = str_replace('<pagebreak','<br class="pagebreak"',$html);
+        if($this->helperTags) {
+            /* Since we are unsure tags is valid : replace by <br class */
+            foreach($this->aKnowTags as $tag) {
+                $html = str_replace("<".$tag.">",'<br class="'.$tag.'" />',$html);
+            }
+        }
         $oPurifier = new CHtmlPurifier();
         $oPurifier->options = array(
             'AutoFormat.RemoveEmpty'=>false,
@@ -200,6 +207,11 @@ class limeMpdfHelper {
         );
         $html=$oPurifier->purify($html);
         $html = str_replace('<br class="pagebreak"','<pagebreak',$html);
+        if($this->helperTags) {
+            foreach($this->aKnowTags as $tag) {
+                $html = str_replace('<br class="'.$tag.'" />',"<".$tag.">",$html);
+            }
+        }
         return $html;
     }
 

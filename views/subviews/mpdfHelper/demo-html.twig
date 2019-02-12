@@ -8,6 +8,7 @@ $limeMpdfHelper->doPdfContent($html);
 </pre>
 <p>In constructor you can set the surveyid to be used for Template used in generator.</p>
 <pre>$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);</pre>
+
 <h2>Adapt html and css</h2>
 <p>The twig files used are in <code>./views/subviews/mpdfHelper/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
 <p>Each twig files get this variables : <code>title</code>, <code>subtiles</code> and <code>aSurveyInfo</code>.</p>
@@ -26,7 +27,7 @@ $limeMpdfHelper->doPdfContent($html);
 <p>Since mimeMpdf use mpdf, you can use HTML in your pdf.
 Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html">supported tags</a>, supported <a href="https://mpdf.github.io/html-support/html-attributes.html">tags attributes</a> and <a href="https://mpdf.github.io/css-stylesheets/supported-css.html">supported CSS</a>.</p>
 <p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes. You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.</p>
-<p>By default : LimeMpdfHelper include some adapated Bootstrap style and some helper style.</p>
+<p>By default : LimeMpdfHelper include some adapted Bootstrap style and some helper style.</p>
 
 <pagebreak>
 <h1>Bootstrap adapted style for pdf</h1>
@@ -213,7 +214,7 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
   <li><code>&lt;checkbox&gt;</code> : <checkbox></li>
   <li><code>&lt;checkbox-checked&gt;</code> : <checkbox-checked></li>
   </ul>
-  <p>If you want your own checkbox or radio picture : you can send radio.svg,radio-checked.svg,checkbox.svg and checkbox-checked.svg to template files.</p>
+  <p>If you want your own checkbox or radio picture : you can send <code>radio.svg</code>,<code>radio-checked.svg</code>,<code>checkbox.svg</code> and <code>checkbox-checked.svg</code> to template files.</p>
   <p>You can upadte totally the system using class and or anything else with the files in <code>./views/subviews/mpdfHelper/tags/</code></p>
 
   <h3>Validation states</h3>
@@ -255,7 +256,9 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
   <h2>Image</h2>
   <p>You can just include image with img tag, using direct link. </p>
   <ul>
-   <li>Respect the with and height set (here height set to 50pt) : <img alt="logo Sondages Pro" style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"></li>
-   <li>Only img-thumbnail class are respected : <img alt="logo Sondages Pro in img-thumbnail" class="img-thumbnail"  style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"><li>
-   <li>Invalid image show a default picture : <img alt="Invalid image" style="height: 50pt;" src="./invalid.jpg">
+    <li>Respect the with and height set (here height set to 50pt) : <img alt="logo Sondages Pro" style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"></li>
+    <li>Only img-thumbnail class are respected : <img alt="logo Sondages Pro in img-thumbnail" class="img-thumbnail"  style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"><li>
+    <li>Invalid image show a default picture : <img alt="Invalid image" style="height: 50pt;" src="./invalid.jpg">
   </ul>
+  <div class="alert alert-warning"><div class="strong">Managing image source :</div> here we use <code>&#123;&#123; imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') &#125;&#125;</code> it give <code>{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}</code> for the source of image.
+  <br>It can broke loading of image in some condition. Maybe you need to add the complete directory name of your image of your image from root.</div>
