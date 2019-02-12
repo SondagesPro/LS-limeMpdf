@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="44pt"
+   height="44pt"
+   viewBox="0 0 58.666667 58.666667"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="radio.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     id="namedview8"
+     showgrid="false"
+     units="pt"
+     fit-margin-top="2"
+     fit-margin-right="2"
+     fit-margin-bottom="2"
+     fit-margin-left="2" />
+  <g
+     id="g26">
+    <path
+       style="fill:#666666;stroke-width:1.33333337"
+       sodipodi:nodetypes="ssssssssss"
+       id="path2"
+       d="M 29.333333,2.6666667 C 14.6,2.6666667 2.6666667,14.6 2.6666667,29.333333 2.6666667,44.066666 14.6,56 29.333333,56 44.066666,56 56,44.066666 56,29.333333 56,14.6 44.066666,2.6666667 29.333333,2.6666667 Z m 0,47.9999993 c -11.786667,0 -21.3333329,-9.546666 -21.3333329,-21.333333 0,-11.786667 9.5466659,-21.3333329 21.3333329,-21.3333329 11.786667,0 21.333333,9.5466659 21.333333,21.3333329 0,11.786667 -9.546666,21.333333 -21.333333,21.333333 z" />
+    <path
+       style="fill:none"
+       id="path4"
+       d="M 5.3333334,5.3333334 H 53.333333 V 53.333333 H 5.3333334 Z" />
+    <path
+       style="fill:#ffffff;stroke-width:1.33333337"
+       sodipodi:nodetypes="sssss"
+       id="path2-3"
+       d="m 29.333333,50.666666 c -11.786667,0 -21.333332,-9.546666 -21.333332,-21.333333 0,-11.786667 9.546665,-21.3333321 21.333332,-21.3333321 11.786667,0 21.333333,9.5466651 21.333333,21.3333321 0,11.786667 -9.546666,21.333333 -21.333333,21.333333 z" />
+  </g>
+</svg>
