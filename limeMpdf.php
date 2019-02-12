@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.0.3-dev
+ * @version 0.1.0-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -78,7 +78,7 @@ class limeMpdf extends PluginBase {
         App()->setLanguage(Yii::app()->session['adminlang']);
         $function = $this->getEvent()->get('function');
         /* event updated here */
-        $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/demo-html.twig', array('aSurveyInfo'=>array()));
+        $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/demo-html.twig', array('aSurveyInfo'=>array()));
         $pdfHelper = new \limeMpdf\helper\limeMpdfHelper();
 
         $pdfHelper->setOptions(array(

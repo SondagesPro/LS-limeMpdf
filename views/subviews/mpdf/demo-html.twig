@@ -10,7 +10,7 @@ $limeMpdfHelper->doPdfContent($html);
 <pre>$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);</pre>
 
 <h2>Adapt html and css</h2>
-<p>The twig files used are in <code>./views/subviews/mpdfHelper/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
+<p>The twig files used are in <code>./views/subviews/mpdf/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
 <p>Each twig files get this variables : <code>title</code>, <code>subtiles</code> and <code>aSurveyInfo</code>.</p>
 <ul>
 <li><code>body.twig</code> : the final content of you PDF, the content are inside <code>content</code> variable.</li>
@@ -32,7 +32,7 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
 <pagebreak>
 <h1>Bootstrap adapted style for pdf</h1>
 <p>LimeMpdf include by default some Bootstrap 3 style. Then this demo follow Bootstrap 3 CSS page.</p>
-<p>The stylesheet used are in <code>views/subviews/mpdfHelper/style-bootstrap.twig</code>. You can use your own with same file at same place in your template.</p>
+<p>The stylesheet used are in <code>views/subviews/mpdf/style-bootstrap.twig</code>. You can use your own with same file at same place in your template.</p>
 <h2>Grid system</h2>
 <p>limeMpdf include boostrap grid-system, with some restriction. Pdf page is considered as a medium screen, the col-lg are removed.</p>
 <p>Since Mpdf didn't use border-box : padding are set to 0, and adding border to col borke the line.</p>
@@ -215,7 +215,7 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
   <li><code>&lt;checkbox-checked&gt;</code> : <checkbox-checked></li>
   </ul>
   <p>If you want your own checkbox or radio picture : you can send <code>radio.svg</code>,<code>radio-checked.svg</code>,<code>checkbox.svg</code> and <code>checkbox-checked.svg</code> to template files.</p>
-  <p>You can upadte totally the system using class and or anything else with the files in <code>./views/subviews/mpdfHelper/tags/</code></p>
+  <p>You can upadte totally the system using class and or anything else with the files in <code>./views/subviews/mpdf/tags/</code></p>
 
   <h3>Validation states</h3>
   <div class="form-group has-success">
@@ -251,7 +251,7 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
   </div>
 
   <h2>Adding tags</h2>
-  <p>More tags can be added in $limeMpdfHelper->aKnowTags (public) array, this load a view in <code>./views/subviews/mpdfHelper/tags/</code> of your template with exactly the same name (except the twig part).</p>
+  <p>More tags can be added in $limeMpdfHelper->aKnowTags (public) array, this load a view in <code>./views/subviews/mpdf/tags/</code> of your template with exactly the same name (except the twig part).</p>
 
   <h2>Image</h2>
   <p>You can just include image with img tag, using direct link. </p>

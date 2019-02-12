@@ -145,14 +145,14 @@ class limeMpdfHelper {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
         if(is_null($this->headerHtml)) {
-            $this->headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/header.twig', $renderData);
+            $this->headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/header.twig', $renderData);
         }
         if(is_null($this->footerHtml)) {
-            $this->footerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/footer.twig', $renderData);
+            $this->footerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/footer.twig', $renderData);
         }
         $renderData['content'] = $html;
-        $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/body.twig', $renderData);
-        $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/stylesheet.twig', $renderData);
+        $bodyHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/body.twig', $renderData);
+        $stylesheet = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/stylesheet.twig', $renderData);
 
         try {
             $mpdf = new \Mpdf\Mpdf($this->mpdfOptions);
@@ -230,7 +230,7 @@ class limeMpdfHelper {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
         foreach($this->aKnowTags as $tag) {
-            $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdfHelper/tags/'.$tag.'.twig', $renderData);
+            $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/tags/'.$tag.'.twig', $renderData);
             $html = str_replace("<".$tag.">",$replacement,$html);
         }
         return $html;
