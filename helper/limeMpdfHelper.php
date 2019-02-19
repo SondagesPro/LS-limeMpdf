@@ -64,7 +64,7 @@ class limeMpdfHelper {
         $this->title = Yii::app()->getConfig('sitename');
         $this->mpdfOptions = array(
             'mode' => $mode,
-            'setAutoTopMargin' =>'pad',
+            'setAutoTopMargin' =>'stretch',
             'tempDir' => Yii::app()->getRuntimePath(), /* @todo : create own dir and cleaning it */
         );
         if($surveyId) {
