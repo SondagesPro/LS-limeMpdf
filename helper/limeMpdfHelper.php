@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.2.2-dev
+ * @version 0.2.3-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -231,6 +231,7 @@ class limeMpdfHelper {
         }
         foreach($this->aKnowTags as $tag) {
             $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/tags/'.$tag.'.twig', $renderData);
+            $html = str_replace("<".$tag." />",$replacement,$html);
             $html = str_replace("<".$tag.">",$replacement,$html);
         }
         return $html;
