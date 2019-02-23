@@ -1,192 +1,500 @@
-<h1>Simple usage</h1>
-<p title="Annotations automatiques">LimeMpdf allow plugin to create pdf more easily for user‘s.</p>
-
-<pre>$html = "&lt;p&gt;Some HTML to put in your PDF.&lt;/p&gt;";
+<section>
+  <h1>Simple usage</h1>
+  <p title="Annotations automatiques">LimeMpdf allow plugin to create pdf more easily for user‘s.</p>
+  <pre>$html = "&lt;p&gt;Some HTML to put in your PDF.&lt;/p&gt;";
 $limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper();
 /* Send pdf file to browser for download */
 $limeMpdfHelper->doPdfContent($html);
 </pre>
-<p>In constructor you can set the surveyid to be used for Template used in generator.</p>
-<pre>$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);</pre>
-
-<h2>Adapt html and css</h2>
-<p>The twig files used are in <code>./views/subviews/mpdf/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
-<p>Each twig files get this variables : <code>title</code>, <code>subtiles</code> and <code>aSurveyInfo</code>.</p>
-<ul>
-<li><code>body.twig</code> : the final content of you PDF, the content are inside <code>content</code> variable.</li>
-<li><code>head.twig</code> : the final header set, it‘s empty : no header was set.</li>
-<li><code>stylesheet.twig</code> : the stylesheet used, by default include style-bootstrap.twig, style-helper.twig and style-custom.twig. style-custom.twig are empty and stay empty in this plugin.</li>
-</ul>
-<h2>limeMpdfHelper option and function</h2>
-<ul class="list-unstyled">
-<li><code>$limeMpdfHelper->setTitle($title,$subtitle=null);</code>: set the title and the sub title for header.</li>
-<li><code>$limeMpdfHelper->setOptions($options = array());</code>: set specific option for Mpdf. This don‘t reset whole options, just set this in array.</li>
-</ul>
-<pagebreak>
-<h1>Available style, html and restriction</h1>
-<p>Since mimeMpdf use mpdf, you can use HTML in your pdf.
-Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html">supported tags</a>, supported <a href="https://mpdf.github.io/html-support/html-attributes.html">tags attributes</a> and <a href="https://mpdf.github.io/css-stylesheets/supported-css.html">supported CSS</a>.</p>
-<p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes. You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.</p>
-<p>By default : LimeMpdfHelper include some adapted Bootstrap style and some helper style.</p>
-
-<pagebreak>
-<h1>Bootstrap adapted style for pdf</h1>
-<p>LimeMpdf include by default some Bootstrap 3 style. Then this demo follow Bootstrap 3 CSS page.</p>
-<p>The stylesheet used are in <code>views/subviews/mpdf/style-bootstrap.twig</code>. You can use your own with same file at same place in your template.</p>
-<h2>Grid system</h2>
-<p>limeMpdf include boostrap grid-system, with some restriction. Pdf page is considered as a medium screen, the col-lg are removed.</p>
-<p>Since Mpdf didn't use border-box : padding are set to 0, and adding border to col borke the line.</p>
-<h3>Stacked-to-horizontal</h3>
-<div class="row">
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-  <div class="col-md-1 bg-info">.col-md-1</div>
-  <div class="col-md-1">.col-md-1</div>
-</div>
-<div class="row">
-  <div class="col-md-8 bg-info">.col-md-8</div>
-  <div class="col-md-4">.col-md-4</div>
-</div>
-<div class="row">
-  <div class="col-md-4 bg-info">.col-md-4</div>
-  <div class="col-md-4">.col-md-4</div>
-  <div class="col-md-4 bg-info">.col-md-4</div>
-</div>
-<div class="row">
-  <div class="col-md-6 bg-info">.col-md-6</div>
-  <div class="col-md-6">.col-md-6</div>
-</div>
-<h3>Offsetting columns</h3>
-<div class="row">
-  <div class="col-md-4 bg-info">.col-md-4 .bg-info</div>
-  <div class="col-md-4 col-md-offset-4 bg-info">.col-md-4 .col-md-offset-4 .bg-info</div>
-</div>
-<div class="row">
-  <div class="col-md-3 col-md-offset-3 bg-info">.col-md-3 .col-md-offset-3</div>
-  <div class="col-md-3 col-md-offset-3 bg-info">.col-md-3 .col-md-offset-3</div>
-</div>
-<div class="row">
-  <div class="col-md-6 col-md-offset-3 bg-info">.col-md-6 .col-md-offset-3</div>
-</div>
-<h3>Nesting columns</h3>
-<div class="row">
-  <div class="col-sm-9 bg-info">
-    Level 1: .col-sm-9
-    <div class="row">
-      <div class="col-xs-8 col-sm-6 bg-success">
-        Level 2: .col-xs-8 .col-sm-6
-      </div>
-      <div class="col-xs-4 col-sm-6 bg-warning">
-        Level 2: .col-xs-4 .col-sm-6
+  <p>In constructor you can set the surveyid to be used for Template used in generator.</p>
+  <pre>$limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);</pre>
+  <h2>Adapt html and css</h2>
+  <p>The twig files used are in <code>./views/subviews/mpdf/</code>. Then if this files are in template used : it replace the default twig file from plugin.</p>
+  <p>Each twig files get this variables : <code>title</code>, <code>subtiles</code> and <code>aSurveyInfo</code>.</p>
+  <ul>
+    <li><code>body.twig</code> : the final content of you PDF, the content are inside <code>content</code> variable.</li>
+    <li><code>head.twig</code> : the final header set, it‘s empty : no header was set.</li>
+    <li><code>stylesheet.twig</code> : the stylesheet used, by default include style-bootstrap.twig, style-helper.twig and style-custom.twig. style-custom.twig are empty and stay empty in this plugin.</li>
+  </ul>
+  <h2>limeMpdfHelper option and function</h2>
+  <ul class="list-unstyled">
+    <li><code>$limeMpdfHelper->setTitle($title,$subtitle=null);</code>: set the title and the sub title for header.</li>
+    <li><code>$limeMpdfHelper->setOptions($options = array());</code>: set specific option for Mpdf. This don‘t reset whole options, just set this in array.</li>
+  </ul>
+</section>
+<pagebreak />
+<section>
+  <h1>Available style, html and restriction</h1>
+  <p>Since mimeMpdf use mpdf, you can use HTML in your pdf.
+    Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html">supported tags</a>, supported <a href="https://mpdf.github.io/html-support/html-attributes.html">tags attributes</a> and <a href="https://mpdf.github.io/css-stylesheets/supported-css.html">supported CSS</a>.
+  </p>
+  <p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes. You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.</p>
+  <p>By default : LimeMpdfHelper include some adapted Bootstrap style and some helper style.</p>
+  <div class="alert alert-warning"><strong>Mpdf don't use display css class</strong>, then a div is display as a bloc, a span inline and td table.cell : your css can not change this.
+    Inline part don‘t have padding or margin. If you want something near display:inline-block : you need to set the width of a div element.
+  </div>
+</section>
+<pagebreak />
+<section>
+  <h1>Bootstrap adapted style for pdf</h1>
+  <p>LimeMpdf include by default some Bootstrap 3 style. Then this demo follow Bootstrap 3 CSS page.</p>
+  <p>The stylesheet used are in <code>views/subviews/mpdf/style-bootstrap.twig</code>. You can use your own with same file at same place in your template.</p>
+  <pagebreak />
+  <h2>Grid system</h2>
+  <p>limeMpdf include boostrap grid-system, with some restriction. Pdf page is considered as a medium screen, the col-lg are removed.</p>
+  <p>Since Mpdf didn't use border-box : padding are set to 0, and adding border to col borke the line.</p>
+  <h3>Stacked-to-horizontal</h3>
+  <div class="row">
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+    <div class="col-md-1 bg-info">.col-md-1</div>
+    <div class="col-md-1">.col-md-1</div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 bg-info">.col-md-8</div>
+    <div class="col-md-4">.col-md-4</div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 bg-info">.col-md-4</div>
+    <div class="col-md-4">.col-md-4</div>
+    <div class="col-md-4 bg-info">.col-md-4</div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 bg-info">.col-md-6</div>
+    <div class="col-md-6">.col-md-6</div>
+  </div>
+  <h3>Offsetting columns</h3>
+  <div class="row">
+    <div class="col-md-4 bg-info">.col-md-4 .bg-info</div>
+    <div class="col-md-4 col-md-offset-4 bg-info">.col-md-4 .col-md-offset-4 .bg-info</div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 col-md-offset-3 bg-info">.col-md-3 .col-md-offset-3</div>
+    <div class="col-md-3 col-md-offset-3 bg-info">.col-md-3 .col-md-offset-3</div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 bg-info">.col-md-6 .col-md-offset-3</div>
+  </div>
+  <h3>Nesting columns</h3>
+  <div class="row">
+    <div class="col-sm-9 bg-info">
+      Level 1: .col-sm-9
+      <div class="row">
+        <div class="col-xs-8 col-sm-6 bg-success">
+          Level 2: .col-xs-8 .col-sm-6
+        </div>
+        <div class="col-xs-4 col-sm-6 bg-warning">
+          Level 2: .col-xs-4 .col-sm-6
+        </div>
       </div>
     </div>
   </div>
-</div>
-<h3>Fixed padding of columns</h3>
-<p>Since right and left padding of columns are resetted to 0, you can use <code>.inner-col</code> to get some right and left padding element.</p>
-<pre>&lt;div class="row"&gt;
+  <h3>Fixed padding of columns</h3>
+  <p>Since right and left padding of columns are resetted to 0, you can use <code>.inner-col</code> to get some right and left padding element.</p>
+  <pre>&lt;div class="row"&gt;
   &lt;div class="col-md-8 bg-info"&gt;&lt;div class="inner-col"&gt;.col-md-8&lt;/div&gt;&lt;/div&gt;
   &lt;div class="col-md-4"&gt;&lt;div class="inner-col"&gt;.col-md-4&lt;/div&gt;&lt;/div&gt;
 &lt;/div&gt;</pre>
-<div class="row">
-  <div class="col-md-8 bg-info"><div class="inner-col">.col-md-8</div></div>
-  <div class="col-md-4"><div class="inner-col">.col-md-4</div></div>
-</div>
-<h2>Typography</h2>
-<h3>Basic typography</h3>
-<p>Include all basic typography like <strong>strong</strong>, <em>em</em> or <small>small</small>. In bootstrap you can use <code>.small</code>, with limeMpdf you can use too <code>.strong</code> or <code>.em</code>.
-<h3>The header style</h3>
-<div class="h1">h1. Bootstrap heading <small>Secondary text</small></div>
-<div class="h2">h2. Bootstrap heading <small>Secondary text</small></div>
-<div class="h3">h3. Bootstrap heading <small>Secondary text</small></div>
-<div class="h4">h4. Bootstrap heading <small>Secondary text</small></div>
-<div class="h5">h5. Bootstrap heading <small>Secondary text</small></div>
-<div class="h6">h6. Bootstrap heading <small>Secondary text</small></div>
-<h3>Lead</h3>
-<p class="lead">Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.</p>
-<h3>Alignment classes</h3>
-<p class="text-left">Left aligned text.</p>
-<p class="text-center">Center aligned text.</p>
-<p class="text-right">Right aligned text.</p>
-<p class="text-justify">Justified text.</p>
-<p class="text-nowrap">No wrap text.</p>
-<h3>Transformation classes</h3>
-<p class="text-lowercase">Lowercased text.</p>
-<p class="text-uppercase">Uppercased text.</p>
-<p class="text-capitalize">Capitalized text.</p>
-<h3>Blockquote</h3>
-<blockquote>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-</blockquote>
-<h3>List</h3>
-<h4>Unordered</h4>
-<ul> <li>Lorem ipsum dolor sit amet</li> <li>Consectetur adipiscing elit</li> <li>Integer molestie lorem at massa</li> <li>Facilisis in pretium nisl aliquet</li> <li>Nulla volutpat aliquam velit <ul> <li>Phasellus iaculis neque</li> <li>Purus sodales ultricies</li> <li>Vestibulum laoreet porttitor sem</li> <li>Ac tristique libero volutpat at</li> </ul> </li> <li>Faucibus porta lacus fringilla vel</li> <li>Aenean sit amet erat nunc</li> <li>Eget porttitor lorem</li> </ul>
-<h4>Ordered</h4>
-<ol> <li>Lorem ipsum dolor sit amet</li> <li>Consectetur adipiscing elit</li> <li>Integer molestie lorem at massa</li> <li>Facilisis in pretium nisl aliquet</li> <li>Nulla volutpat aliquam velit</li> <li>Faucibus porta lacus fringilla vel</li> <li>Aenean sit amet erat nunc</li> <li>Eget porttitor lorem</li> </ol>
-<h4>Unstyled</h4>
-<ul class="list-unstyled"> <li>Lorem ipsum dolor sit amet</li> <li>Consectetur adipiscing elit</li> <li>Integer molestie lorem at massa</li> <li>Facilisis in pretium nisl aliquet</li> <li>Nulla volutpat aliquam velit <ul> <li>Phasellus iaculis neque</li> <li>Purus sodales ultricies</li> <li>Vestibulum laoreet porttitor sem</li> <li>Ac tristique libero volutpat at</li> </ul> </li> <li>Faucibus porta lacus fringilla vel</li> <li>Aenean sit amet erat nunc</li> <li>Eget porttitor lorem</li> </ul>
-<h4>Description (definition list)</h4>
-<dl> <dt>Description lists</dt> <dd>A description list is perfect for defining terms.</dd> <dt>Euismod</dt> <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd> <dd>Donec id elit non mi porta gravida at eget metus.</dd> <dt>Malesuada porta</dt> <dd>Etiam porta sem malesuada magna mollis euismod.</dd> </dl>
-<h4>Horizontal description</h4>
-<dl class="dl-horizontal"> <dt>Description lists</dt> <dd>A description list is perfect for defining terms.</dd> <dt>Euismod</dt> <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd> <dd>Donec id elit non mi porta gravida at eget metus.</dd> <dt>Malesuada porta</dt> <dd>Etiam porta sem malesuada magna mollis euismod.</dd> <dt>Felis euismod semper eget lacinia</dt> <dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd> </dl>
-<h3>Inline and block code</h3>
-<p>For example, <code>&lt;section&gt;</code> should be wrapped as inline.</p>
-<p>Pre is used as block, you can use it inline with .pre <span class="pre">class</span> but without border-radius or padding. Can be used to show user enter text.</p>
+  <div class="row">
+    <div class="col-md-8 bg-info">
+      <div class="inner-col">.col-md-8</div>
+    </div>
+    <div class="col-md-4">
+      <div class="inner-col">.col-md-4</div>
+    </div>
+  </div>
+  <pagebreak />
+  <h2>Typography</h2>
+  <h3>Basic typography</h3>
+  <p>Include all basic typography like <strong>strong</strong>, <em>em</em> or <small>small</small>. In bootstrap you can use <code>.small</code>, with limeMpdf you can use too <code>.strong</code> or <code>.em</code>.</p>
+  <h3>The header style</h3>
+  <div class="h1">h1. Bootstrap heading <small>Secondary text</small></div>
+  <div class="h2">h2. Bootstrap heading <small>Secondary text</small></div>
+  <div class="h3">h3. Bootstrap heading <small>Secondary text</small></div>
+  <div class="h4">h4. Bootstrap heading <small>Secondary text</small></div>
+  <div class="h5">h5. Bootstrap heading <small>Secondary text</small></div>
+  <div class="h6">h6. Bootstrap heading <small>Secondary text</small></div>
+  <h3>Lead</h3>
+  <p class="lead">Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus.</p>
+  <pagebreak />
+  <h3>Alignment classes</h3>
+  <p class="text-left">Left aligned text.</p>
+  <p class="text-center">Center aligned text.</p>
+  <p class="text-right">Right aligned text.</p>
+  <p class="text-justify">Justified text.</p>
+  <p class="text-nowrap">No wrap text.</p>
+  <h3>Transformation classes</h3>
+  <p class="text-lowercase">Lowercased text.</p>
+  <p class="text-uppercase">Uppercased text.</p>
+  <p class="text-capitalize">Capitalized text.</p>
+  <h3>Blockquote</h3>
+  <blockquote>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+  </blockquote>
+  <pagebreak />
+  <h3>List</h3>
+  <h4>Unordered</h4>
+  <ul>
+    <li>Lorem ipsum dolor sit amet</li>
+    <li>Consectetur adipiscing elit</li>
+    <li>Integer molestie lorem at massa</li>
+    <li>Facilisis in pretium nisl aliquet</li>
+    <li>
+      Nulla volutpat aliquam velit 
+      <ul>
+        <li>Phasellus iaculis neque</li>
+        <li>Purus sodales ultricies</li>
+        <li>Vestibulum laoreet porttitor sem</li>
+        <li>Ac tristique libero volutpat at</li>
+      </ul>
+    </li>
+    <li>Faucibus porta lacus fringilla vel</li>
+    <li>Aenean sit amet erat nunc</li>
+    <li>Eget porttitor lorem</li>
+  </ul>
+  <h4>Ordered</h4>
+  <ol>
+    <li>Lorem ipsum dolor sit amet</li>
+    <li>Consectetur adipiscing elit</li>
+    <li>Integer molestie lorem at massa</li>
+    <li>Facilisis in pretium nisl aliquet</li>
+    <li>Nulla volutpat aliquam velit</li>
+    <li>Faucibus porta lacus fringilla vel</li>
+    <li>Aenean sit amet erat nunc</li>
+    <li>Eget porttitor lorem</li>
+  </ol>
+  <h4>Unstyled</h4>
+  <ul class="list-unstyled">
+    <li>Lorem ipsum dolor sit amet</li>
+    <li>Consectetur adipiscing elit</li>
+    <li>Integer molestie lorem at massa</li>
+    <li>Facilisis in pretium nisl aliquet</li>
+    <li>
+      Nulla volutpat aliquam velit 
+      <ul>
+        <li>Phasellus iaculis neque</li>
+        <li>Purus sodales ultricies</li>
+        <li>Vestibulum laoreet porttitor sem</li>
+        <li>Ac tristique libero volutpat at</li>
+      </ul>
+    </li>
+    <li>Faucibus porta lacus fringilla vel</li>
+    <li>Aenean sit amet erat nunc</li>
+    <li>Eget porttitor lorem</li>
+  </ul>
+  <h4>Description (definition list)</h4>
+  <dl>
+    <dt>Description lists</dt>
+    <dd>A description list is perfect for defining terms.</dd>
+    <dt>Euismod</dt>
+    <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+    <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+    <dt>Malesuada porta</dt>
+    <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+  </dl>
+  <h4>Horizontal description</h4>
+  <dl class="dl-horizontal">
+    <dt>Description lists</dt>
+    <dd>A description list is perfect for defining terms.</dd>
+    <dt>Euismod</dt>
+    <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+    <dd>Donec id elit non mi porta gravida at eget metus.</dd>
+    <dt>Malesuada porta</dt>
+    <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+    <dt>Felis euismod semper eget lacinia</dt>
+    <dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</dd>
+  </dl>
+  <pagebreak />
+  <h2>Table</h2>
+  <h3>Basic table</h3>
+  <table class="table">
+    <caption>Optional table caption.</caption>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Table bordered</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Larry</td>
+        <td>the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Table condensed</h3>
+  <table class="table table-condensed">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Username</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3>Table with contextual class</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Column heading</th>
+        <th>Column heading</th>
+        <th>Column heading</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active">
+        <th scope="row">1</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr class="success">
+        <th scope="row">3</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr class="info">
+        <th scope="row">5</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr>
+        <th scope="row">6</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr class="warning">
+        <th scope="row">7</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr>
+        <th scope="row">8</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+      <tr class="danger">
+        <th scope="row">9</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+      </tr>
+    </tbody>
+  </table>
+  <pagebreak />
+  <h2>Buttons</h2>
+  <p>Since button are not included in pdf generated and mpdf force inline tag to be inline : only usage of div can be done. Then only block button allowed, you can set a width woth col-sm-X class (here we set a col-sm-2).</p>
+  <div class="row">
+    <div class="btn btn-default col-sm-2">Default</div>
+    <div class="btn btn-primary col-sm-2">Primary</div>
+    <div class="btn btn-success col-sm-2">Success</div>
+    <div class="btn btn-info col-sm-2">Info</div>
+    <div class="btn btn-warning col-sm-2">Warning</div>
+    <div class="btn btn-danger col-sm-2">Danger</div>
+    <div class="btn btn-link col-sm-2">Link</div>
+  </div>
+  <p>But you can wrap buttton inside column (with ot without padding fixer).</p>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="btn btn-default">Default</div>
+    </div>
+    <div class="col-sm-3">
+      <div class="btn btn-primary">Primary</div>
+    </div>
+    <div class="col-sm-3">
+      <div class="inner-col">
+        <div class="btn btn-warning">Warning</div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="inner-col">
+        <div class="btn btn-danger">Danger</div>
+      </div>
+    </div>
+  </div>
+  <pagebreak />
+  <h2>Helpers class</h2>
+  <h3>Contextual colors</h3>
+  <p class="text-muted">text-muted : Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
+  <p class="text-primary">text-primary : Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+  <p class="text-success">text-success : Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+  <p class="text-info">text-info : Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+  <p class="text-warning">text-warning : Etiam porta sem malesuada magna mollis euismod.</p>
+  <p class="text-danger">text-danger : Donec ullamcorper nulla non metus auctor fringilla.</p>
+  <h3>Contextual backgrouns</h3>
+  <p class="bg-primary">bg-primary : Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+  <p class="bg-success">bg-success : Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+  <p class="bg-info">bg-info : Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+  <p class="bg-warning">bg-warning : Etiam porta sem malesuada magna mollis euismod.</p>
+  <p class="bg-danger">Donec ullamcorper nulla non metus auctor fringilla.</p>
+  <pagebreak />
+  <h3>Alerts</h3>
+  <div class="alert alert-success" role="alert"> <strong>Well done!</strong> You successfully read this important alert message. </div>
+  <div class="alert alert-info" role="alert"> <strong>Heads up!</strong> This alert needs your attention, but it's not super important. </div>
+  <div class="alert alert-warning" role="alert"> <strong>Warning!</strong> Better check yourself, you're not looking too good. </div>
+  <div class="alert alert-danger" role="alert"> <strong>Oh snap!</strong> Change a few things up and try submitting again. </div>
+  <h3>Well</h3>
+  <div class="well"> Look, I'm in a well! </div>
+  <h3>Panel</h3>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body">
+      Panel content
+    </div>
+    <div class="panel-footer">Panel footer</div>
+  </div>
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body"> Panel success content </div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body"> Panel primary content </div>
+  </div>
 
-<h2>Table</h2>
-<h3>Basic table</h3>
-<table class="table"> <caption>Optional table caption.</caption> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table>
-<h3>Table bordered</h3>
-<table class="table table-bordered"> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table>
-<h3>Table condensed</h3>
-<table class="table table-condensed"> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td colspan="2">Larry the Bird</td> <td>@twitter</td> </tr> </tbody> </table>
-<h3>Table with contextual class</h3>
-<table class="table"> <thead> <tr> <th>#</th> <th>Column heading</th> <th>Column heading</th> <th>Column heading</th> </tr> </thead> <tbody> <tr class="active"> <th scope="row">1</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">2</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="success"> <th scope="row">3</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">4</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="info"> <th scope="row">5</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">6</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="warning"> <th scope="row">7</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr> <th scope="row">8</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> <tr class="danger"> <th scope="row">9</th> <td>Column content</td> <td>Column content</td> <td>Column content</td> </tr> </tbody> </table>
-
-<h2>Buttons</h2>
-<p>Since button are not included in pdf generated and mpdf force inline tag to be inline : only usage of div can be done. Then only block button allowed, you can set a width woth col-sm-X class (here we set a col-sm-2).</p>
-<div class="row">
-  <div class="btn btn-default col-sm-2">Default</div>
-  <div class="btn btn-primary col-sm-2">Primary</div>
-  <div class="btn btn-success col-sm-2">Success</div>
-  <div class="btn btn-info col-sm-2">Info</div>
-  <div class="btn btn-warning col-sm-2">Warning</div>
-  <div class="btn btn-danger col-sm-2">Danger</div>
-  <div class="btn btn-link col-sm-2">Link</div>
-</div>
-<p>But you can wrap buttton inside column (with ot without padding fixer).</p>
-<div class="row">
-  <div class="col-sm-3"><div class="btn btn-default">Default</div></div>
-  <div class="col-sm-3"><div class="btn btn-primary">Primary</div></div>
-  <div class="col-sm-3"><div class="inner-col"><div class="btn btn-warning">Warning</div></div></div>
-  <div class="col-sm-3"><div class="inner-col"><div class="btn btn-danger">Danger</div></div></div>
-</div>
-
-<h2>Helpers class</h2>
-<h3>Contextual colors</h3>
- <p class="text-muted">text-muted : Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
- <p class="text-primary">text-primary : Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
- <p class="text-success">text-success : Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
- <p class="text-info">text-info : Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
- <p class="text-warning">text-warning : Etiam porta sem malesuada magna mollis euismod.</p>
- <p class="text-danger">text-danger : Donec ullamcorper nulla non metus auctor fringilla.</p>
-<h3>Contextual backgrouns</h3>
- <p class="bg-primary">bg-primary : Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
- <p class="bg-success">bg-success : Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
- <p class="bg-info">bg-info : Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
- <p class="bg-warning">bg-warning : Etiam porta sem malesuada magna mollis euismod.</p>
- <p class="bg-danger">Donec ullamcorper nulla non metus auctor fringilla.</p> 
-
-<pagebreak>
-
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body"> Panel info content </div>
+  </div>
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body"> Panel warning content </div>
+  </div>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <div class="h3 panel-title">Panel title</div>
+    </div>
+    <div class="panel-body"> Panel danger content </div>
+  </div>
+  <pagebreak />
+  <h3>Label and badges usage</h3>
+  <p>Since a span still inline : usage of label and badges are more difficult. To,have the border-radus and good padding : you must use div tag and wrap your content using col.</p>
+  <pre>
+    &lt;div class="h3 row"&gt;
+      &lt;div class="col-sm-6"&gt;Example heading &lt;/div&gt;
+      &lt;div class="col-sm-3"&gt;
+        &lt;div class="label label-success" style="width:4em"&gt;New&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="h3 "&gt;
+      Example heading
+      &lt;span class="label label-danger"&gt;New&lt;/span&gt;
+    &lt;/div&gt;
+  </pre>
+  <div class="h3 row">
+    <div class="col-sm-6">Example heading </div>
+    <div class="col-sm-3"><div class="label label-success" style="width:4em">New</div></div>
+  </div>
+  <div class="h3 ">
+    Example heading
+    <span class="label label-danger">New</span>
+  </div>
+</section>
+<pagebreak />
+<section>
   <h1>Helper and tips</h1>
   <h2>Show it like a form</h2>
   <h3>Text input and textarea</h3>
@@ -202,21 +510,35 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
       &lt;div class="col-sm-6"&gt;&lt;div class="form-control input-text"&gt;form-control in sm-6&lt;/div&gt;&lt;/div&gt;
   &lt;/div&gt;</pre>
   <div class="form-group">
-      <div class="col-sm-4"><div class="control-label">The false label in a col-sm-6</div></div>
-      <div class="col-sm-6"><div class="form-control input-text">form-control in sm-6</div></div>
+    <div class="col-sm-4">
+      <div class="control-label">The false label in a col-sm-6</div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-control input-text">form-control in sm-6</div>
+    </div>
   </div>
-
   <h3>Tags for input:radio and input:checked</h3>
   <p>To do your report, limeMpdf offer some extra tag:</p>
   <ul>
-  <li><code>&lt;radio&gt;</code> : <radio></li>
-  <li><code>&lt;radio-checked&gt;</code> : <radio-checked></li>
-  <li><code>&lt;checkbox&gt;</code> : <checkbox></li>
-  <li><code>&lt;checkbox-checked&gt;</code> : <checkbox-checked></li>
+    <li>
+      <code>&lt;radio&gt;</code> : 
+      <radio>
+    </li>
+    <li>
+      <code>&lt;radio-checked&gt;</code> : 
+      <radio-checked>
+    </li>
+    <li>
+      <code>&lt;checkbox&gt;</code> : 
+      <checkbox>
+    </li>
+    <li>
+      <code>&lt;checkbox-checked&gt;</code> : 
+      <checkbox-checked>
+    </li>
   </ul>
   <p>If you want your own checkbox or radio picture : you can send <code>radio.svg</code>,<code>radio-checked.svg</code>,<code>checkbox.svg</code> and <code>checkbox-checked.svg</code> to template files.</p>
   <p>You can upadte totally the system using class and or anything else with the files in <code>./views/subviews/mpdf/tags/</code></p>
-
   <h3>Validation states</h3>
   <div class="form-group has-success">
     <div class="control-label">Input with success</div>
@@ -232,33 +554,43 @@ Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html"
     <div class="form-control" >&nbsp;</div>
   </div>
   <div class="has-success">
-      <div class="control-label">
-        <checkbox>
-        Checkbox with success
-      </div>
-  </div>
-  <div class="has-warning">
-      <div class="control-label">
-        <checkbox-checked>
-        Checkbox with warning
-      </div>
-  </div>
-  <div class="has-error">
-      <div class="control-label">
-        <checkbox>
-        Checkbox with error
+    <div class="control-label">
+      <checkbox>
+      Checkbox with success
     </div>
   </div>
-
+  <div class="has-warning">
+    <div class="control-label">
+      <checkbox-checked>
+      Checkbox with warning
+    </div>
+  </div>
+  <div class="has-error">
+    <div class="control-label">
+      <checkbox>
+      Checkbox with error
+    </div>
+  </div>
+  <pagebreak />
   <h2>Adding tags</h2>
   <p>More tags can be added in $limeMpdfHelper->aKnowTags (public) array, this load a view in <code>./views/subviews/mpdf/tags/</code> of your template with exactly the same name (except the twig part).</p>
-
+  <p>For example if you create <code>./views/subviews/mpdf/tags/mytag.twig</code> file, you can use it inside your html with <code>&lt;mytag&gt;</code> after adding it with dedicated function <code>$limeMpdf->addTag('mytag');</code></p>
+  <div class="alert alert-warning">
+    <strong>Plugin don't test if twig file exist : </strong>
+    this can broke the pdf generation if you use another theme without this tage twig file.
+  </div>
+  <pagebreak />
   <h2>Image</h2>
   <p>You can just include image with img tag, using direct link. </p>
   <ul>
     <li>Respect the with and height set (here height set to 50pt) : <img alt="logo Sondages Pro" style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"></li>
-    <li>Only img-thumbnail class are respected : <img alt="logo Sondages Pro in img-thumbnail" class="img-thumbnail"  style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}"><li>
+    <li>Only img-thumbnail class are respected : <img alt="logo Sondages Pro in img-thumbnail" class="img-thumbnail"  style="height: 50pt;" src="{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}">
+    <li>
     <li>Invalid image show a default picture : <img alt="Invalid image" style="height: 50pt;" src="./invalid.jpg">
   </ul>
-  <div class="alert alert-warning"><div class="strong">Managing image source :</div> here we use <code>&#123;&#123; imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') &#125;&#125;</code> it give <code>{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}</code> for the source of image.
-  <br>It can broke loading of image in some condition. Maybe you need to add the complete directory name of your image of your image from root.</div>
+  <div class="alert alert-warning">
+    <div class="strong">Managing image source :</div>
+    here we use <code>&#123;&#123; imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') &#125;&#125;</code> it give <code>{{ imageSrc('./plugins/limeMpdf/assets/logo-sondagespro.png') }}</code> for the source of image.
+    <br>It can broke loading of image in some condition. Maybe you need to add the complete directory name of your image of your image from root.
+  </div>
+</section>

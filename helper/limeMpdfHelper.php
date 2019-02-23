@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.2.3-dev
+ * @version 0.3.0-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,6 +106,16 @@ class limeMpdfHelper {
     public function setOptions($options = array())
     {
         $this->mpdfOptions = array_merge($this->mpdfOptions,$options);
+    }
+
+    /**
+     * Add a tag to existing tags
+     * @param string
+     * @retun void
+     */
+    public function addTag($string)
+    {
+        $this->aKnowTags[] = $string;
     }
 
     /**
@@ -229,6 +239,7 @@ class limeMpdfHelper {
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
+        /* since we add .twig, don't think need to filter it ? */
         foreach($this->aKnowTags as $tag) {
             $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/tags/'.$tag.'.twig', $renderData);
             $html = str_replace("<".$tag." />",$replacement,$html);
