@@ -28,11 +28,13 @@ $limeMpdfHelper->doPdfContent($html);
   <p>Since mimeMpdf use mpdf, you can use HTML in your pdf.
     Here is the list of <a href="https://mpdf.github.io/html-support/html-tags.html">supported tags</a>, supported <a href="https://mpdf.github.io/html-support/html-attributes.html">tags attributes</a> and <a href="https://mpdf.github.io/css-stylesheets/supported-css.html">supported CSS</a>.
   </p>
-  <p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes. You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.</p>
+  <p>All html are filtered to disable public error, only <a href="https://mpdf.github.io/html-support/custom-html-tags.html">simple pagebreak</a> is currently allowed from Mpdf custom attributes.</p>
+  <p>You can set <code>limeMpdfHelper->filterHtml</code> to false, <strong class="text-danger">use at your own risk</strong>.The demo-html.twig file are not filtered, you can create your own on your template to check if your HTML need filtering.</p>
   <p>By default : LimeMpdfHelper include some adapted Bootstrap style and some helper style.</p>
   <div class="alert alert-warning"><strong>Mpdf don't use display css class</strong>, then a div is display as a bloc, a span inline and td table.cell : your css can not change this.
     Inline part don‘t have padding or margin. If you want something near display:inline-block : you need to set the width of a div element.
   </div>
+
 </section>
 <pagebreak />
 <section>
