@@ -87,6 +87,7 @@ class limeMpdf extends PluginBase {
             //~ 'title2annots' => true,
         ));
         $pdfHelper->setTitle("Demo of limeMpdf",Yii::app()->getConfig('sitename'));
+        $pdfHelper->filterHtml = false;
         if($function == 'view') {
             $pdfHelper->doPdfContent($html,\Mpdf\Output\Destination::INLINE);
         }
