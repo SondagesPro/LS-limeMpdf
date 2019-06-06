@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.0-dev
+ * @version 0.1.1-dev
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -68,13 +68,14 @@ class limeMpdf extends PluginBase {
 
     public function newDirectRequest()
     {
+        if($this->getEvent()->get('target') != get_class($this)) {
+            return;
+        }
         if(!Permission::getUserId()) {
             /* Making PDF take memory, disable if not loggued */
             throw new CHttpException(401);
         }
-        if($this->getEvent()->get('target') != get_class($this)) {
-            return;
-        }
+
         App()->setLanguage(Yii::app()->session['adminlang']);
         $function = $this->getEvent()->get('function');
         /* event updated here */
