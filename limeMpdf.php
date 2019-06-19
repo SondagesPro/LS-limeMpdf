@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.1-dev
+ * @version 0.1.2
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -57,10 +57,10 @@ class limeMpdf extends PluginBase {
     public function getPluginSettings($getValues=true)
     {
         $pluginSettings= parent::getPluginSettings($getValues);
-        $testLink = $this->api->createUrl('plugins/direct', array('plugin' => get_class($this),'function'=>'view'));
+        $testLink = Yii::app()->getController()->createUrl('plugins/direct', array('plugin' => get_class($this),'function'=>'view'));
         $testLink = CHtml::link($testLink,$testLink);
         $pluginSettings['linkDemoView']['content'] = sprintf($pluginSettings['linkDemoView']['content'],$testLink);
-        $testLink = $this->api->createUrl('plugins/direct', array('plugin' => get_class($this),'function'=>'download'));
+        $testLink = Yii::app()->getController()->createUrl('plugins/direct', array('plugin' => get_class($this),'function'=>'download'));
         $testLink = CHtml::link($testLink,$testLink);
         $pluginSettings['linkDemoDownload']['content'] = sprintf($pluginSettings['linkDemoDownload']['content'],$testLink);
         return $pluginSettings;
