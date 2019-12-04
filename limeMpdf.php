@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.2
+ * @version 0.1.3
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -18,6 +18,7 @@
  * GNU General Public License for more details.
  */
 class limeMpdf extends PluginBase {
+    protected $storage = 'DbStorage';
 
     static protected $description = 'Add mpdf as a plugin helper and some other tool for using it.';
     static protected $name = 'limeMpdf';
