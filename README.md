@@ -49,5 +49,6 @@ Each twig files get this variables : `title`,`subtiles` and `aSurveyInfo`.
 - HomePage <http://extensions.sondages.pro/>
 - Copyright © 2019 Denis Chenu <https://sondages.pro>
 - Include mPDF [Copyright © 2010 Ian Back](https://mpdf.github.io/about-mpdf/license.html) under GPL licence ([Credit](https://mpdf.github.io/about-mpdf/credits.html))
+- [![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/SondagesPro/) : [Donate on Liberapay](https://liberapay.com/SondagesPro/)
 
 Distributed under [GNU AFFERO GENERAL PUBLIC LICENSE Version 3](http://www.gnu.org/licenses/agpl.txt) licence
