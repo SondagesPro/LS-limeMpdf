@@ -3,9 +3,9 @@
  * Plugin helper for limesurvey : add mpdf as an helper and some other tool for using it
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.1.3
+ * @version 0.1.5
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -25,10 +25,37 @@ class limeMpdf extends PluginBase {
 
     public function init()
     {
+        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+            $this->subscribe('beforeActivate');
+            return;
+        }
         Yii::setPathOfAlias('limeMpdf', dirname(__FILE__));
         $this->subscribe('getPluginTwigPath');
         $this->subscribe('newDirectRequest');
     }
+
+    public static function getDescription()
+    {
+        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+            return 'This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.';
+        }
+        return parent::getDescription();
+    }
+
+    /**
+     * Disable activate in 3.9 and lesser
+     */
+    public function beforeActivate()
+    {
+        // No need to test (registered only for 3.9 and lesser) but more clear
+        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+            $event = $this->getEvent();
+            $event->set('success', false);
+            // Optionally set a custom error message.
+            $event->set('message', 'This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.');
+        }
+    }
+
     /**
      * Add some views for this and other plugin
      */
@@ -58,6 +85,11 @@ class limeMpdf extends PluginBase {
     public function getPluginSettings($getValues=true)
     {
         $pluginSettings= parent::getPluginSettings($getValues);
+        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+            $pluginSettings['linkDemoView']['content'] = "<div class='alert alert-danger error'>This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.</div>";
+            $pluginSettings['linkDemoDownload']['content'] = "";
+            return;
+        }
         $testLink = Yii::app()->getController()->createUrl('plugins/direct', array('plugin' => get_class($this),'function'=>'view'));
         $testLink = CHtml::link($testLink,$testLink);
         $pluginSettings['linkDemoView']['content'] = sprintf($pluginSettings['linkDemoView']['content'],$testLink);
