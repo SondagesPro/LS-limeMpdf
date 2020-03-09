@@ -1,1 +1,1 @@
-This file is not used in plugin, but you can use it to create your own sbg in twig file.
+This files is not used in plugin, but you can use it to create your own svg in twig file.

@@ -15,7 +15,7 @@ Allow plugins to use [mPdf](https://mpdf.github.io/) to generate PDF document.
 
 ## Simple usage
 
-A documentation using mPdf can be view at Plugin Settings.
+A complete documentation using mPdf can be view at Plugin Settings. You can see this documentation at [this repository](assets/Demo%20of%20limeMpdf.pdf).
 
 ### Basic usage
 

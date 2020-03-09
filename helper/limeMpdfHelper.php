@@ -3,9 +3,9 @@
  * limeMpdfHelper part of renderMessage Plugin
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2017 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2017-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.3.0-dev
+ * @version 0.3.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,11 +111,16 @@ class limeMpdfHelper {
     /**
      * Add a tag to existing tags
      * @param string
+     * @throw Exception
      * @retun void
      */
     public function addTag($string)
     {
-        $this->aKnowTags[] = $string;
+        $tag = preg_replace("/[^a-zA-Z0-9_-]+/", "", $string);
+        if(App()->getConfig("debug") && $tag !== $string) {
+            throw new \CException('Invalid tag send “'.\CHtml::encode($string)."”");
+        }
+        $this->aKnowTags[] = $tag;
     }
 
     /**
@@ -239,8 +244,9 @@ class limeMpdfHelper {
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
-        /* since we add .twig, don't think need to filter it ? */
+        /* $tag filtered when added */
         foreach($this->aKnowTags as $tag) {
+            /* This broke if file didn't exist : fix it ? */
             $replacement = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/tags/'.$tag.'.twig', $renderData);
             $html = str_replace("<".$tag." />",$replacement,$html);
             $html = str_replace("<".$tag.">",$replacement,$html);
