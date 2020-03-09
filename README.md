@@ -32,13 +32,25 @@ $limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper($surveyId);
 ````
 
 ### Adapt html and css
+
 The twig files used are in `./views/subviews/mpdf/`. Then if this files are in template used : it replace the default twig file from plugin.
+
+If you want to update this file globally : create a new theme based on your desired default theme. In this extended theme directory (`upload/survey/yourtheme`), create `views/subviews/mpdf` diretory.
+Create or copy the file you want to replace in this directory.
 
 Each twig files get this variables : `title`,`subtiles` and `aSurveyInfo`.
 
 - `body.twig` : the final content of you PDF, the content are inside `content` variable.
 - `head.twig` : the final header set, it‘s empty : no header was set.
-- `stylesheet.twig` : the stylesheet used, by default include style-bootstrap.twig, style-helper.twig and style-custom.twig. style-custom.twig are empty and stay empty in this plugin.</li>
+- `footer.twig` : the final footer set.
+- `stylesheet.twig` : the stylesheet used, by default include
+    - style-bootstrap.twig : bootstrap inspired part
+    - style-helper.twig : some specific helper (input-text, inner-col ...)
+    - style-custom.twig : an empty file. It stay empty in this plugin, best place to add your own style.
+
+#### Adding new specific tag
+
+New tags file specific for limeMpdf must be in `views/subviews/mpdf/tags` and muts named as tagname.twig. You arlerady have radio and checknow tag for insipration.
 
 ### limeMpdfHelper option and function
 
