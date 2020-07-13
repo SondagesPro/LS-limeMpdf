@@ -57,9 +57,16 @@ New tags file specific for limeMpdf must be in `views/subviews/mpdf/tags` and mu
 - `$limeMpdfHelper->setTitle($title,$subtitle=null);` : set the title and the sub title for header.
 - `$limeMpdfHelper->setOptions($options = array());` : set specific option for Mpdf. This don‘t reset whole options, just set this in array.
 
+### Compatibility
+
+1.0.0 version was tested on 3.22.25.
+
+The plugin can work on all 3.X, 2.73 and 4.X version (without warranty).
+
+
 ## Home page & Copyright
 - HomePage <http://extensions.sondages.pro/>
-- Copyright © 2019 Denis Chenu <https://sondages.pro>
+- Copyright © 2019-2020 Denis Chenu <https://sondages.pro>
 - Include mPDF [Copyright © 2010 Ian Back](https://mpdf.github.io/about-mpdf/license.html) under GPL licence ([Credit](https://mpdf.github.io/about-mpdf/credits.html))
 - [![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/SondagesPro/) : [Donate on Liberapay](https://liberapay.com/SondagesPro/)
 

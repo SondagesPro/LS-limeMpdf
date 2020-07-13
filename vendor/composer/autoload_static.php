@@ -4,13 +4,17 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit46b90565662bad6ed302aceff1ab7621
+class ComposerStaticInit79311368ddfb5bfabfc40405a03f4016
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -26,6 +30,10 @@ class ComposerStaticInit46b90565662bad6ed302aceff1ab7621
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -40,22 +48,11 @@ class ComposerStaticInit46b90565662bad6ed302aceff1ab7621
         ),
     );
 
-    public static $classMap = array (
-        'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
-        'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
-        'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
-        'FilterASCIIHexDecode' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
-        'FilterLZW' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterLZW.php',
-        'fpdi_pdf_parser' => __DIR__ . '/..' . '/setasign/fpdi/fpdi_pdf_parser.php',
-        'pdf_context' => __DIR__ . '/..' . '/setasign/fpdi/pdf_context.php',
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit46b90565662bad6ed302aceff1ab7621::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit46b90565662bad6ed302aceff1ab7621::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit46b90565662bad6ed302aceff1ab7621::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit79311368ddfb5bfabfc40405a03f4016::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit79311368ddfb5bfabfc40405a03f4016::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

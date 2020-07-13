@@ -20,6 +20,6 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "mpdf/mpdf" : "7.1.*"
+        "mpdf/mpdf" : "8.0.4.*"
     }
 }
