@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2017-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.3.1
+ * @version 0.4.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ namespace limeMpdf\helper;
 require_once __DIR__ . '/../vendor/autoload.php';
 use Mpdf;
 use Yii;
+use PluginEvent;
 use CHtmlPurifier;
 use Template;
 use Survey;
@@ -135,12 +136,6 @@ class limeMpdfHelper {
         \Template::resetInstance();
         $oTemplate = \Template::model()->getInstance(null, $this->surveyId);
 
-        if($this->filterHtml) {
-            $html = $this->cleanUpHtml($html);
-        }
-        if($this->helperTags) {
-            $html = $this->replaceSpecificTags($html);
-        }
         $languageData = getLanguageDetails(Yii::app()->getLanguage());
         $languageData['lang'] = Yii::app()->getLanguage();
         $languageData['dir'] = $languageData['rtl'] ? 'rtl' : 'ltr';
@@ -159,6 +154,23 @@ class limeMpdfHelper {
         if($this->surveyId) {
             $renderData['aSurveyInfo'] = getSurveyInfo($this->surveyId, App()->getLanguage());
         }
+        /* Create a new event : allow limeMpdf plugin to register to getPluginTwigPath event */
+        $oEvent = new PluginEvent('limeMpdfBeforePdf');
+        $oEvent->set("renderData",$renderData);
+        $oEvent->set("filename",$this->filename);
+        $oEvent->set("html",$html);
+        App()->getPluginManager()->dispatchEvent($oEvent);
+        $renderData = $oEvent->get("renderData");
+        $this->filename = $oEvent->get("filename");
+        $html = $oEvent->get("html");
+
+        if($this->filterHtml) {
+            $html = $this->cleanUpHtml($html);
+        }
+        if($this->helperTags) {
+            $html = $this->replaceSpecificTags($html);
+        }
+
         if(is_null($this->headerHtml)) {
             $this->headerHtml = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/header.twig', $renderData);
         }

@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 1.0.0
+ * @version 1.0.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -30,7 +30,7 @@ class limeMpdf extends PluginBase {
             return;
         }
         Yii::setPathOfAlias('limeMpdf', dirname(__FILE__));
-        $this->subscribe('getPluginTwigPath');
+        $this->subscribe('limeMpdfBeforePdf');
         $this->subscribe('newDirectRequest');
     }
 
@@ -54,6 +54,14 @@ class limeMpdf extends PluginBase {
             // Optionally set a custom error message.
             $event->set('message', 'This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.');
         }
+    }
+
+    /**
+     * Register to own event to register to getPluginTwigPath event
+     */
+    public function limeMpdfBeforePdf()
+    {
+        $this->subscribe('getPluginTwigPath');
     }
 
     /**
@@ -112,6 +120,7 @@ class limeMpdf extends PluginBase {
         App()->setLanguage(Yii::app()->session['adminlang']);
         $function = $this->getEvent()->get('function');
         /* event updated here */
+        $this->subscribe('getPluginTwigPath');
         $html = Yii::app()->twigRenderer->renderPartial('./subviews/mpdf/demo-html.twig', array('aSurveyInfo'=>array()));
         $pdfHelper = new \limeMpdf\helper\limeMpdfHelper();
 
