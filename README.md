@@ -63,6 +63,10 @@ New tags file specific for limeMpdf must be in `views/subviews/mpdf/tags` and mu
 
 The plugin can work on all 3.X, 2.73 and 4.X version (without warranty).
 
+### Api update
+
+- 2 : theme : rename svg file : `filename.svg.twig` to `filename.twig`
+- 1 : 1st stable release
 
 ## Home page & Copyright
 - HomePage <http://extensions.sondages.pro/>
