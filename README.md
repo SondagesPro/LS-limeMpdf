@@ -65,6 +65,7 @@ The plugin can work on all 3.X, 2.73 and 4.X version (without warranty).
 
 ### Api update
 
+- 2.1 : theme : moive svg element to tag directly
 - 2 : theme : rename svg file : `filename.svg.twig` to `filename.twig`
 - 1 : 1st stable release
 

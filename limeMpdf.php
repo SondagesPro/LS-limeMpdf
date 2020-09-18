@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 2.0.0
+ * @version 2.1.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -30,8 +30,12 @@ class limeMpdf extends PluginBase {
             return;
         }
         Yii::setPathOfAlias('limeMpdf', dirname(__FILE__));
-        $this->subscribe('limeMpdfBeforePdf');
+        /* For the demao */
         $this->subscribe('newDirectRequest');
+        /* for twig registering */
+        $this->subscribe('limeMpdfBeforePdf');
+        /* for twig edit */
+        $this->subscribe('getValidScreenFiles');
     }
 
     public static function getDescription()
@@ -73,6 +77,33 @@ class limeMpdf extends PluginBase {
         $this->getEvent()->append('add', array($viewPath));
     }
 
+    public function getValidScreenFiles()
+    {
+        if(
+            $this->getEvent()->get("type")!='view' ||
+            ($this->getEvent()->get("screen") && $this->getEvent()->get("screen")!="pdf")
+        ){
+            return;
+        }
+        $this->subscribe('getPluginTwigPath');
+        $addTwigs = array(
+            "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."header.twig",
+            "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."body.twig",
+            "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."footer.twig",
+            "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."style-custom.twig",
+        );
+        if ($this->get('twigEditDemo',null,null,1) && App()->getRequest()->getQuery('templatename') == App()->getConfig('defaulttheme')) {
+            $addTwigs[] = "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."demo-html.twig";
+        }
+        if ($this->get('twigEditButtonTag',null,null,0)) {
+            $addTwigs[] = "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."tags".DIRECTORY_SEPARATOR."radio.twig";
+            $addTwigs[] = "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."tags".DIRECTORY_SEPARATOR."radio-checked.twig";
+            $addTwigs[] = "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."tags".DIRECTORY_SEPARATOR."checkbox.twig";
+            $addTwigs[] = "subviews".DIRECTORY_SEPARATOR."mpdf".DIRECTORY_SEPARATOR."tags".DIRECTORY_SEPARATOR."checkbox-checked.twig";
+        }
+        $this->getEvent()->append('add', $addTwigs);
+    }
+
     /**
     * @var array[] the settings
     */
@@ -84,6 +115,16 @@ class limeMpdf extends PluginBase {
         'linkDemoDownload' => array(
             'type' => 'info',
             'content' => 'Download the generated demonstration using default template %s.',
+        ),
+        'twigEditDemo' => array(
+            'type' => 'boolean',
+            'default' => 1,
+            'label' => 'Allow edit of demo in default theme',
+        ),
+        'twigEditButtonTag' => array(
+            'type' => 'boolean',
+            'default' => 0,
+            'label' => 'Allow edit of button tags',
         ),
     );
 
