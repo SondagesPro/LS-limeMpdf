@@ -5,7 +5,7 @@
  * @author Denis Chenu <denis@sondages.pro>
  * @copyright 2019-2020 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 2.1.0
+ * @version 2.1.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -51,6 +51,10 @@ class limeMpdf extends PluginBase {
      */
     public function beforeActivate()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
+
         // No need to test (registered only for 3.9 and lesser) but more clear
         if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
             $event = $this->getEvent();
@@ -65,6 +69,9 @@ class limeMpdf extends PluginBase {
      */
     public function limeMpdfBeforePdf()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         $this->subscribe('getPluginTwigPath');
     }
 
@@ -73,12 +80,19 @@ class limeMpdf extends PluginBase {
      */
     public function getPluginTwigPath()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
+
         $viewPath = dirname(__FILE__)."/views";
         $this->getEvent()->append('add', array($viewPath));
     }
 
     public function getValidScreenFiles()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         if(
             $this->getEvent()->get("type")!='view' ||
             ($this->getEvent()->get("screen") && $this->getEvent()->get("screen")!="pdf")
@@ -133,6 +147,9 @@ class limeMpdf extends PluginBase {
      */
     public function getPluginSettings($getValues=true)
     {
+        if(!Permission::model()->hasGlobalPermission('settings','read')) {
+            throw new CHttpException(403);
+        }
         $pluginSettings= parent::getPluginSettings($getValues);
         if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
             $pluginSettings['linkDemoView']['content'] = "<div class='alert alert-danger error'>This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.</div>";
@@ -150,6 +167,9 @@ class limeMpdf extends PluginBase {
 
     public function newDirectRequest()
     {
+        if (!$this->getEvent()) {
+            throw new CHttpException(403);
+        }
         if($this->getEvent()->get('target') != get_class($this)) {
             return;
         }
