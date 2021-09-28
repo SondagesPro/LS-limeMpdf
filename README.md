@@ -59,13 +59,14 @@ New tags file specific for limeMpdf must be in `views/subviews/mpdf/tags` and mu
 
 ### Compatibility
 
-1.0.0 version was tested on 3.22.25.
+The plugin can work on all 3.X, 2.73, 4.X and 5.X version (without warranty).
 
-The plugin can work on all 3.X, 2.73 and 4.X version (without warranty).
+- 1.0.0 version was tested on 3.22.25.
+- 2.2.0 versin was tested on 5.1.13 
 
 ### Api update
 
-- 2.1 : theme : moive svg element to tag directly
+- 2.1 : theme : move svg element to tag directly
 - 2 : theme : rename svg file : `filename.svg.twig` to `filename.twig`
 - 1 : 1st stable release
 

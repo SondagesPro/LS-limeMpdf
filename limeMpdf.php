@@ -3,9 +3,9 @@
  * Plugin helper for limesurvey : add mpdf as an helper and some other tool for using it
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019-2020 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019-2021 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 2.1.1
+ * @version 2.2.0
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
