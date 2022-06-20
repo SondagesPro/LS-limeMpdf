@@ -3,9 +3,9 @@
  * limeMpdfHelper part of renderMessage Plugin
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2017-2020 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2017-2022 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 0.4.0
+ * @version 2.2.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,7 +190,7 @@ class limeMpdfHelper {
             if(trim($this->footerHtml)) {
                 $mpdf->SetHTMLFooter($this->footerHtml);
             }
-
+            $mpdf->setBasePath(App()->getBaseUrl(true));
             $mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
             $mpdf->WriteHTML($bodyHtml,\Mpdf\HTMLParserMode::HTML_BODY);
             $mpdf->Output($this->filename,$output);

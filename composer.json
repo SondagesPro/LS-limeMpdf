@@ -1,6 +1,6 @@
 {
-    "name": "sondagesPro/mpdfHelper",
-    "version": "0.2.0-dev",
+    "name": "sondagespro/mpdfhelper",
+    "version": "2.2.1",
     "description": "Adding mpdf as helper for other plugins",
     "type": "limesurvey-plugin",
     "homepage": "https://gitlab.com/SondagesPro/",
@@ -20,6 +20,6 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "mpdf/mpdf" : "8.0.4.*"
+        "mpdf/mpdf" : ">=8.0"
     }
 }
