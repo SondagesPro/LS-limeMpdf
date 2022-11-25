@@ -1239,7 +1239,9 @@ th {
   padding: 5pt;
 }
 .table-bordered {
-  border: 1pt solid #ddd;
+  border-style:solid;
+  border-width:1px;
+  border-color:#ddd;
 }
 .table-bordered thead tr th,
 .table-bordered tbody tr th,
@@ -1247,8 +1249,18 @@ th {
 .table-bordered thead tr td,
 .table-bordered tbody tr td,
 .table-bordered tfoot tr td {
-  border: 1pt solid #ddd;
+  border-style:solid;
+  border-width:1px;
+  border-color:#ddd;
 }
+.table-bordered td,
+.table-bordered th,
+.table-bordered tr {
+  border-style:solid;
+  border-width:1px;
+  border-color:#ddd;
+}
+
 .table-bordered thead tr th,
 .table-bordered thead tr td {
   border-bottom-width: 2pt;
