@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Plugin helper for limesurvey : add mpdf as an helper and some other tool for using it
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2019-2021 Denis Chenu <http://www.sondages.pro>
+ * @copyright 2019-2023 Denis Chenu <http://www.sondages.pro>
  * @license AGPL v3
- * @version 2.2.0
+ * @version 2.2.1
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -17,15 +18,16 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
 class limeMpdf extends PluginBase {
     protected $storage = 'DbStorage';
 
-    static protected $description = 'Add mpdf as a plugin helper and some other tool for using it.';
-    static protected $name = 'limeMpdf';
+    protected static $description = 'Add mpdf as a plugin helper and some other tool for using it.';
+    protected static$name = 'limeMpdf';
 
     public function init()
     {
-        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+        if (version_compare(Yii::app()->getConfig('versionnumber'), "3.10.0", "<=")) {
             $this->subscribe('beforeActivate');
             return;
         }
@@ -35,12 +37,15 @@ class limeMpdf extends PluginBase {
         /* for twig registering */
         $this->subscribe('limeMpdfBeforePdf');
         /* for twig edit */
-        $this->subscribe('getValidScreenFiles');
+        if (intval(App()->getConfig('versionnumber')) <= 3) {
+            /* see mantis issue https://bugs.limesurvey.org/view.php?id=18589 Unable to use getValidScreenFiles event */
+            $this->subscribe('getValidScreenFiles');
+        }
     }
 
     public static function getDescription()
     {
-        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+        if (version_compare(Yii::app()->getConfig('versionnumber'), "3.10.0", "<=")) {
             return 'This plugin is not compatible with your version. this plugin need LimeSurvey 3.10.0 or up.';
         }
         return parent::getDescription();
@@ -56,7 +61,7 @@ class limeMpdf extends PluginBase {
         }
 
         // No need to test (registered only for 3.9 and lesser) but more clear
-        if (version_compare(Yii::app()->getConfig('versionnumber'),"3.10.0","<=")) {
+        if (version_compare(Yii::app()->getConfig('versionnumber'), "3.10.0", "<=")) {
             $event = $this->getEvent();
             $event->set('success', false);
             // Optionally set a custom error message.
