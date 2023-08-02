@@ -6,7 +6,7 @@ Allow plugins to use [mPdf](https://mpdf.github.io/) to generate PDF document.
 
 ### Via GIT
 - Go to your LimeSurvey Directory
-- Clone in plugins/pdfReport directory `git https://gitlab.com/SondagesPro/coreAndTools/limeMpdf.git limeMpdf`
+- Clone in plugins/pdfReport directory `git clone https://gitlab.com/SondagesPro/coreAndTools/limeMpdf.git limeMpdf`
 
 ### Via ZIP dowload
 - Download <https://dl.sondages.pro/limeMpdf.zip>
