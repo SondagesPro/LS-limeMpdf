@@ -20,7 +20,7 @@ A complete documentation using mPdf can be view at Plugin Settings. You can see 
 ### Basic usage
 
 ````
-$html = "&lt;p&gt;Some HTML to put in your PDF.&lt;/p&gt;";
+$html = "<p>Some HTML to put in your PDF.</p>";
 $limeMpdfHelper = new \limeMpdf\helper\limeMpdfHelper();
 /* Send pdf file to browser for download */
 $limeMpdfHelper->doPdfContent($html);
