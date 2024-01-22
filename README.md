@@ -2,6 +2,8 @@
 
 Allow plugins to use [mPdf](https://mpdf.github.io/) to generate PDF document.
 
+Plugin tested on LimeSurvey 3 and 5. Untested on LimeSurvey 6.
+
 ## Installation
 
 ### Via GIT
@@ -72,8 +74,11 @@ The plugin can work on all 3.X, 2.73, 4.X and 5.X version (without warranty).
 
 ## Home page & Copyright
 - HomePage <http://extensions.sondages.pro/>
-- Copyright © 2019-2020 Denis Chenu <https://sondages.pro>
+- Copyright © 2019-2023 Denis Chenu <https://sondages.pro>
 - Include mPDF [Copyright © 2010 Ian Back](https://mpdf.github.io/about-mpdf/license.html) under GPL licence ([Credit](https://mpdf.github.io/about-mpdf/credits.html))
-- [![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/SondagesPro/) : [Donate on Liberapay](https://liberapay.com/SondagesPro/)
+- Licence : GNU Affero General Public License <https://www.gnu.org/licenses/agpl-3.0.html>
+- [Donate](https://support.sondages.pro/open.php?topicId=12), [Liberapay](https://liberapay.com/SondagesPro/), [OpenCollective](https://opencollective.com/sondagespro) 
 
-Distributed under [GNU AFFERO GENERAL PUBLIC LICENSE Version 3](http://www.gnu.org/licenses/agpl.txt) licence
+## Support
+- Issues <https://gitlab.com/SondagesPro/mailing/sendMailCron/issues>
+- Professional support <https://support.sondages.pro/>

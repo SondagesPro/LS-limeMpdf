@@ -4,17 +4,18 @@
         <name>limeMpdf</name>
         <type>plugin</type>
         <creationDate>2019-02-09</creationDate>
-        <lastUpdate>2022-06-20</lastUpdate>
+        <lastUpdate>2023-01-22</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>2.2.1</version>
+        <version>2.3.0</version>
         <license>GNU Affero General Public License v3.0</license>
         <description><![CDATA[Plugin helper for limesurvey : add mpdf as an helper and some other tool for using it.]]></description>
     </metadata>
 
     <compatibility>
-        <version>5</version>
-        <version>4</version>
         <version>3.10</version>
+        <version>4</version>
+        <version>5</version>
+        <version>6</version>
     </compatibility>
 </config>
