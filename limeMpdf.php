@@ -178,7 +178,7 @@ class limeMpdf extends PluginBase {
         if($this->getEvent()->get('target') != get_class($this)) {
             return;
         }
-        if(!Permission::getUserId()) {
+        if(App()->getUser()->getIsGuest()) {
             /* Making PDF take memory, disable if not loggued */
             throw new CHttpException(401);
         }
