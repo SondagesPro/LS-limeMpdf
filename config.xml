@@ -7,7 +7,7 @@
         <lastUpdate>2024-04-26</lastUpdate>
         <author>Denis Chenu</author>
         <authorUrl>https://www.sondages.pro</authorUrl>
-        <version>2.3.1</version>
+        <version>2.3.2</version>
         <license>GNU Affero General Public License v3.0</license>
         <description><![CDATA[Plugin helper for limesurvey : add mpdf as an helper and some other tool for using it.]]></description>
     </metadata>
